@@ -1,0 +1,171 @@
+
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+#banner {
+  width: 680px;
+  height: 200px;
+  background: #1a0a12;
+  position: relative;
+  overflow: hidden;
+  font-family: monospace;
+}
+canvas { position: absolute; top: 0; left: 0; }
+#text-layer {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+}
+.label-top { position: absolute; top: 18px; left: 40px; font-size: 10px; color: #F8BBD9; letter-spacing: 3px; opacity: 0.7; }
+.label-title { position: absolute; top: 44px; left: 38px; font-size: 24px; font-weight: 900; color: #FCE4EC; letter-spacing: -0.5px; font-family: 'Arial Black', sans-serif; }
+.label-sub1 { position: absolute; top: 82px; left: 40px; font-size: 10px; color: #E91E8C; letter-spacing: 1px; }
+.label-sub2 { position: absolute; top: 98px; left: 40px; font-size: 10px; color: #E91E8C; letter-spacing: 1px; }
+.divider { position: absolute; top: 116px; left: 38px; width: 262px; height: 1px; background: #C2185B; opacity: 0.6; }
+.label-team { position: absolute; top: 128px; left: 40px; font-size: 9px; color: #F8BBD9; opacity: 0.8; }
+.label-methods { position: absolute; top: 142px; left: 40px; font-size: 9px; color: #F8BBD9; opacity: 0.5; }
+.bars { position: absolute; top: 158px; left: 38px; display: flex; gap: 6px; align-items: center; }
+.bar1 { width: 40px; height: 3px; background: #C2185B; border-radius: 2px; }
+.bar2 { width: 25px; height: 3px; background: #E91E8C; border-radius: 2px; opacity: 0.6; }
+.bar3 { width: 15px; height: 3px; background: #F8BBD9; border-radius: 2px; opacity: 0.4; }
+@keyframes gridPulse { 0%,100%{opacity:0.15} 50%{opacity:0.35} }
+.grid-line { animation: gridPulse 4s ease-in-out infinite; }
+</style>
+
+<div id="banner">
+  <canvas id="c" width="680" height="200"></canvas>
+  <div id="text-layer">
+    <div class="label-top">WiM DRP · FALL 2026</div>
+    <div class="label-title">Beyond Labels</div>
+    <div class="label-sub1">Unsupervised Anomaly Detection</div>
+    <div class="label-sub2">for Financial Fraud Detection</div>
+    <div class="divider"></div>
+    <div class="label-team">The Outliers</div>
+    <div class="label-methods">Isolation Forest · LOF · Autoencoders</div>
+    <div class="bars">
+      <div class="bar1"></div>
+      <div class="bar2"></div>
+      <div class="bar3"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+const W = 680, H = 200;
+
+const DARK_PINK = '#C2185B';
+const MID_PINK = '#E91E8C';
+const LIGHT_PINK = '#F8BBD9';
+const VERY_LIGHT = '#FCE4EC';
+
+const normalNodes = [
+  {x:430,y:82},{x:468,y:62},{x:458,y:112},{x:488,y:92},
+  {x:518,y:72},{x:528,y:118},{x:558,y:58},{x:568,y:102},
+  {x:598,y:82},{x:608,y:132},{x:638,y:112},{x:648,y:67},
+  {x:418,y:132},{x:458,y:142},{x:498,y:157},{x:538,y:162},{x:578,y:157}
+];
+
+const edges = [
+  [0,1],[0,2],[0,3],[1,3],[2,3],[3,4],[3,5],[4,5],[5,6],[4,7],
+  [6,7],[7,8],[7,9],[8,9],[9,10],[8,11],[10,11],[0,12],[12,13],
+  [13,2],[13,14],[14,5],[14,15],[15,7],[15,16],[16,9]
+];
+
+const anomaly = {x: 355, y: 40};
+const hotEdges = [0, 2, 12];
+
+let t = 0;
+
+function draw() {
+  ctx.clearRect(0, 0, W, H);
+
+  // Grid lines
+  ctx.strokeStyle = '#C2185B';
+  ctx.lineWidth = 0.3;
+  ctx.globalAlpha = 0.2 + 0.1 * Math.sin(t * 0.5);
+  [50, 100, 150].forEach(y => {
+    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
+  });
+  [170, 340, 510].forEach(x => {
+    ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
+  });
+  ctx.globalAlpha = 1;
+
+  // Normal edges
+  edges.forEach(([a, b], i) => {
+    const isHot = hotEdges.includes(a) || hotEdges.includes(b);
+    ctx.beginPath();
+    ctx.moveTo(normalNodes[a].x, normalNodes[a].y);
+    ctx.lineTo(normalNodes[b].x, normalNodes[b].y);
+    ctx.strokeStyle = LIGHT_PINK;
+    ctx.lineWidth = 0.8;
+    ctx.globalAlpha = 0.4;
+    ctx.stroke();
+  });
+
+  // Hot edges to anomaly
+  const hotTargets = [normalNodes[0], normalNodes[2], normalNodes[12]];
+  hotTargets.forEach((n, i) => {
+    const pulse = 0.6 + 0.4 * Math.sin(t * 2 + i * 1.2);
+    ctx.beginPath();
+    ctx.moveTo(anomaly.x, anomaly.y);
+    ctx.lineTo(n.x, n.y);
+    ctx.strokeStyle = MID_PINK;
+    ctx.lineWidth = 1.5;
+    ctx.globalAlpha = pulse;
+    ctx.stroke();
+  });
+  ctx.globalAlpha = 1;
+
+  // Normal nodes
+  normalNodes.forEach(n => {
+    ctx.beginPath();
+    ctx.arc(n.x, n.y, 3, 0, Math.PI * 2);
+    ctx.fillStyle = LIGHT_PINK;
+    ctx.globalAlpha = 0.7;
+    ctx.fill();
+  });
+  ctx.globalAlpha = 1;
+
+  // Anomaly ping rings
+  [0, 0.7, 1.4].forEach((offset, i) => {
+    const phase = ((t * 0.8 + offset) % 2) / 2;
+    const r = 6 + phase * 18;
+    const alpha = (1 - phase) * 0.5;
+    ctx.beginPath();
+    ctx.arc(anomaly.x, anomaly.y, r, 0, Math.PI * 2);
+    ctx.strokeStyle = DARK_PINK;
+    ctx.lineWidth = 1.2;
+    ctx.globalAlpha = alpha;
+    ctx.stroke();
+  });
+  ctx.globalAlpha = 1;
+
+  // Anomaly core pulse
+  const pulse = 0.7 + 0.3 * Math.sin(t * 2);
+  ctx.beginPath();
+  ctx.arc(anomaly.x, anomaly.y, 7, 0, Math.PI * 2);
+  ctx.fillStyle = DARK_PINK;
+  ctx.globalAlpha = pulse;
+  ctx.fill();
+
+  ctx.beginPath();
+  ctx.arc(anomaly.x, anomaly.y, 4, 0, Math.PI * 2);
+  ctx.fillStyle = VERY_LIGHT;
+  ctx.globalAlpha = 1;
+  ctx.fill();
+
+  // Anomaly label
+  ctx.font = '9px monospace';
+  ctx.fillStyle = MID_PINK;
+  ctx.globalAlpha = 0.85 + 0.15 * Math.sin(t * 1.5);
+  ctx.fillText('anomaly', anomaly.x + 10, anomaly.y - 8);
+  ctx.globalAlpha = 1;
+
+  t += 0.04;
+  requestAnimationFrame(draw);
+}
+
+draw();
+</script>
