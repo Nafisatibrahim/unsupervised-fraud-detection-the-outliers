@@ -1,12 +1,29 @@
 # Beyond Labels: Unsupervised Anomaly Detection for Financial Fraud Detection
 
-This repository contains the research code and materials for the Women in Mathematics Directed Reading Program (WiM DRP) at the University of Waterloo, Fall 2026. The project team is **The Outliers**.
+![Beyond Labels: Unsupervised Fraud Detection animated banner](assets/fraud_detection_banner.gif)
+
+<sub>[View the animated banner directly](assets/fraud_detection_banner.svg)</sub>
+
+<sub>[Open the canvas animation recording source](assets/fraud_detection_banner_gif.html)</sub>
+
+[![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
+[![scikit--learn](https://img.shields.io/badge/scikit--learn-anomaly%20detection-F7931E?logo=scikit-learn&logoColor=white)](https://scikit-learn.org/)
+[![PyTorch](https://img.shields.io/badge/PyTorch-autoencoders-EE4C2C?logo=pytorch&logoColor=white)](https://pytorch.org/)
+[![Kaggle](https://img.shields.io/badge/Data-Kaggle-20BEFF?logo=kaggle&logoColor=white)](https://www.kaggle.com/)
+
+This repository contains the research code and materials for the [Women in Mathematics Directed Reading Program (WiM DRP)](https://uwaterloo.ca/women-in-mathematics/directed-reading-research-programs-drp) at the University of Waterloo, Fall 2026. The project team is **The Outliers**.
 
 ## Project Overview
 
 Financial fraud is difficult to identify because fraudulent transactions are rare, evolving, and often poorly represented by reliable labels. This project investigates whether unsupervised anomaly detection can identify potentially fraudulent transactions without using fraud labels during model training.
 
 We compare two primary methods, Isolation Forest and Local Outlier Factor (LOF), across three financial transaction datasets. Autoencoders are included as a stretch goal. Labels are withheld during training and are used only after scoring for evaluation and analysis.
+
+## Learn More
+
+[![Watch on YouTube](https://img.shields.io/badge/YouTube-Fraud%20Detection%20with%20Machine%20Learning-FF0000?logo=youtube&logoColor=white)](https://www.youtube.com/results?search_query=fraud+detection+machine+learning+isolation+forest+autoencoder)
+
+Explore video explainers covering fraud detection, anomaly detection, Isolation Forest, and autoencoders.
 
 ## Research Question
 
@@ -28,9 +45,9 @@ LOF compares the local density around an observation with the density around its
 
 An autoencoder is a neural network trained to reconstruct predominantly normal transaction data. A large reconstruction error can indicate an anomalous transaction. This method will be implemented if time and compute resources permit.
 
-## Datasets
+## Potential Datasets
 
-The project uses the following Kaggle datasets:
+The project may use the following Kaggle datasets:
 
 1. **ULB Credit Card Fraud Detection**: anonymized European card transactions with a highly imbalanced fraud label.
 2. **IEEE-CIS Fraud Detection**: identity and transaction features from an e-commerce fraud detection competition.
@@ -65,7 +82,7 @@ Notebook directories contain exploratory analysis and experiments for each metho
 Python 3.10 or newer is recommended.
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/Nafisatibrahim/unsupervised-fraud-detection-the-outliers
 cd unsupervised-fraud-detection-the-outliers
 python -m venv .venv
 ```
@@ -117,7 +134,7 @@ Keep dataset-specific experiments and outputs clearly named. Because the dataset
 
 ## Team
 
-**The Outliers** is the mentee team for the Women in Mathematics Directed Reading Program at the University of Waterloo, Fall 2026.
+**The Outliers** is the mentee team for the [Women in Mathematics Directed Reading Program](https://uwaterloo.ca/women-in-mathematics/directed-reading-research-programs-drp) at the University of Waterloo, Fall 2026.
 
 Project focus: unsupervised learning, anomaly detection, and responsible evaluation for financial fraud detection.
 

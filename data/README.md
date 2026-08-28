@@ -9,7 +9,7 @@ Raw and processed datasets are intentionally excluded from version control. Down
 3. Configure the Kaggle API. The standard setup is to download `kaggle.json` from the Kaggle account settings page and place it in the location expected by the Kaggle CLI. Do not commit this file.
 4. From the repository root, create `data/raw/` and place each downloaded dataset in its own subdirectory.
 
-## Datasets
+## Potential Datasets
 
 ### ULB Credit Card Fraud Detection
 
