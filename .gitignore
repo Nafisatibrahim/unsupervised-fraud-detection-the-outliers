@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+.Python
+.venv/
+venv/
+env/
+ENV/
+*.egg-info/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Local data and generated results
+data/raw/
+data/processed/
+results/**/*.csv
+results/**/*.json
+results/**/*.parquet
+results/**/*.pkl
+results/**/*.png
+results/**/*.pdf
+
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+kaggle.json
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+.vscode/
+*.swp
