@@ -2,10 +2,6 @@
 
 ![Beyond Labels: Unsupervised Fraud Detection animated banner](assets/fraud_detection_banner.gif)
 
-<sub>[View the animated banner directly](assets/fraud_detection_banner.svg)</sub>
-
-<sub>[Open the canvas animation recording source](assets/fraud_detection_banner_gif.html)</sub>
-
 [![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
 [![scikit--learn](https://img.shields.io/badge/scikit--learn-anomaly%20detection-F7931E?logo=scikit-learn&logoColor=white)](https://scikit-learn.org/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-autoencoders-EE4C2C?logo=pytorch&logoColor=white)](https://pytorch.org/)
@@ -35,13 +31,19 @@ The comparison will consider detection quality, computational cost, sensitivity 
 
 ### Isolation Forest
 
+![Isolation Forest](https://img.shields.io/badge/Method-Isolation%20Forest-2E7D32)
+
 Isolation Forest isolates observations by randomly partitioning the feature space. Rare and unusual observations tend to be isolated in fewer splits, producing higher anomaly scores.
 
 ### Local Outlier Factor
 
+![Local Outlier Factor](https://img.shields.io/badge/Method-Local%20Outlier%20Factor-7E57C2)
+
 LOF compares the local density around an observation with the density around its neighbors. An observation in a substantially less-dense region than its neighbors is treated as a local outlier.
 
 ### Autoencoders (stretch goal)
+
+![Autoencoders](https://img.shields.io/badge/Method-Autoencoders-FB8C00)
 
 An autoencoder is a neural network trained to reconstruct predominantly normal transaction data. A large reconstruction error can indicate an anomalous transaction. This method will be implemented if time and compute resources permit.
 
